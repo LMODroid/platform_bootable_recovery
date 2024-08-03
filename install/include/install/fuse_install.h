@@ -26,6 +26,8 @@
 
 using android::volmgr::VolumeInfo;
 
+std::string BrowseDirectory(const std::string& path, Device* device, RecoveryUI* ui);
+
 // Starts FUSE with the package from |path| as the data source. And installs the package from
 // |FUSE_SIDELOAD_HOST_PATHNAME|. The |path| can point to the location of a package zip file or a
 // block map file with the prefix '@'; e.g. /sdcard/package.zip, @/cache/recovery/block.map.
