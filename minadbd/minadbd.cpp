@@ -28,6 +28,7 @@
 
 #include "adb.h"
 #include "adb_auth.h"
+#include "daemon/transport_daemon.h"
 #include "transport.h"
 
 #include "minadbd/types.h"
@@ -42,12 +43,14 @@ static void minadbd_net_init() {
   if (sscanf(prop_port.c_str(), "%d", &port) == 1 && port > 0) {
     LOG(DEBUG) << "using tcp port=" << std::to_string(port);
     // Listen on TCP and VSOCK port specified by service.adb.tcp.port property.
-    local_init(android::base::StringPrintf("tcp:%d", port));
-    local_init(android::base::StringPrintf("vsock:%d", port));
+    init_transport_socket_server(android::base::StringPrintf("tcp:%d", port));
+    init_transport_socket_server(android::base::StringPrintf("vsock:%d", port));
   } else {
     // Listen on default port.
-    local_init(android::base::StringPrintf("tcp:%d", DEFAULT_ADB_LOCAL_TRANSPORT_PORT));
-    local_init(android::base::StringPrintf("vsock:%d", DEFAULT_ADB_LOCAL_TRANSPORT_PORT));
+    init_transport_socket_server(
+        android::base::StringPrintf("tcp:%d", DEFAULT_ADB_LOCAL_TRANSPORT_PORT));
+    init_transport_socket_server(
+        android::base::StringPrintf("vsock:%d", DEFAULT_ADB_LOCAL_TRANSPORT_PORT));
   }
 }
 
